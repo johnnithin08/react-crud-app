@@ -42,7 +42,7 @@ import {
   sw8,
 } from '../../../styles';
 import {findCategoryImage} from '../../../utils/category-mapper';
-// import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {NunitoRegular} from '../../../constants/fonts';
 
 interface IExpenseItem {
@@ -139,7 +139,7 @@ export const Expenses: FunctionComponent<IExpensesProp> = ({
         keyExtractor={(item: IExpenseItem, index: number) => `${item}-${index}`}
       />
       <Pressable style={addViewStyle} onPress={handleAddExpense}>
-        {/* <FontAwesome5 name="plus" size={sh24} /> */}
+        <FontAwesome5 name="plus" size={sh24} />
       </Pressable>
     </SafeAreaView>
   );
