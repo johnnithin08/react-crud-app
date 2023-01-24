@@ -19,25 +19,11 @@ export const Details: FunctionComponent = () => {
     <SafeAreaView>
       <CustomSpacer space={sh32} />
       <View style={{ ...px(sw48) }}>
-        <CustomTextInput
-          label="Name"
-          onChangeText={setName}
-          spaceToLabel={sh16}
-        />
+        <CustomTextInput label="Name" onChangeText={setName} spaceToLabel={sh16} />
         <CustomSpacer space={sh24} />
-        <CustomTextInput
-          keyboardType="numeric"
-          label="Amount"
-          spaceToLabel={sh16}
-          onChangeText={setAmount}
-        />
+        <CustomTextInput keyboardType="numeric" label="Amount" spaceToLabel={sh16} onChangeText={setAmount} />
         <CustomSpacer space={sh24} />
-        <NewDropdown
-          items={[{ label: "1", value: "1" }]}
-          placeholder={"Select One"}
-          handleChange={handleExpenseCategory}
-          value={""}
-        />
+        <NewDropdown items={[{ label: "1", value: "1" }]} placeholder={"Select One"} handleChange={handleExpenseCategory} value={""} />
       </View>
     </SafeAreaView>
   );
