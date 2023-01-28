@@ -1,14 +1,8 @@
-import React, {
-  Component,
-  Fragment,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from 'react';
-import {FlatList, Image, Pressable, Text, View, ViewStyle} from 'react-native';
-import axios from 'axios';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {CustomSpacer} from '../../../components/Views';
+import React, { Component, Fragment, FunctionComponent, useEffect, useRef, useState } from "react";
+import { FlatList, Image, ImageStyle, Pressable, Text, View, ViewStyle } from "react-native";
+import axios from "axios";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { CustomFlexSpacer, CustomSpacer, Loading } from "../../../components/Views";
 import {
   absolutePosition,
   border,
@@ -26,8 +20,12 @@ import {
   imageContain,
   px,
   py,
+  sh1,
+  sh10,
+  sh100,
   sh12,
   sh16,
+  sh20,
   sh24,
   sh40,
   sh48,
@@ -40,10 +38,11 @@ import {
   sw40,
   sw54,
   sw8,
-} from '../../../styles';
-import {findCategoryImage} from '../../../utils/category-mapper';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {NunitoRegular} from '../../../constants/fonts';
+} from "../../../styles";
+import { findCategoryImage } from "../../../utils/category-mapper";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { NunitoRegular } from "../../../constants/fonts";
+import { useIsFocused } from "@react-navigation/native";
 
 interface IExpenseItem {
   id: number;
@@ -56,28 +55,32 @@ interface IExpensesProp {
   navigation: HomeStackNavigationProp;
 }
 
-export const Expenses: FunctionComponent<IExpensesProp> = ({
-  navigation,
-}: IExpensesProp) => {
+export const Expenses: FunctionComponent<IExpensesProp> = ({ navigation }: IExpensesProp) => {
   const [expenseList, setExpenseList] = useState<IExpenseItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const isFocused = useIsFocused();
 
   const handleFetch = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3001/get_expenses');
-      console.log('resp', response.data.message);
+      const response = await axios.get("http://localhost:3001/get_expenses");
       setExpenseList(response.data.message);
+      setLoading(false);
+      console.log("resp expense list", response);
     } catch (err) {
-      console.log('err', err);
+      setLoading(false);
+      console.log("err", err);
     }
   };
 
   const handleAddExpense = () => {
-    navigation.navigate('Details');
+    navigation.navigate("Details");
   };
 
   useEffect(() => {
+    console.log("enter");
     handleFetch();
-  }, []);
+  }, [isFocused]);
 
   const addViewStyle: ViewStyle = {
     ...border(colorBlack._1, sw1, sw100),
@@ -86,61 +89,90 @@ export const Expenses: FunctionComponent<IExpensesProp> = ({
     backgroundColor: colorGreen._1,
     height: sh40,
     width: sh40,
-    bottom: 20,
-    right: 20,
+    bottom: sh10,
+    right: sh20,
+  };
+
+  const imageStyle: ImageStyle = {
+    ...imageContain,
+    height: sh50,
+    width: sh50,
+  };
+
+  const editIconStyle: ViewStyle = {
+    ...centerHV,
+    ...border(colorBlack._1, sh1, sh100),
+    height: sh40,
+    width: sh40,
   };
   return (
     <SafeAreaView style={flexChild}>
-      <View style={{backgroundColor: colorGreen._1, height: sh48, ...centerHV}}>
+      <View style={{ backgroundColor: colorGreen._1, height: sh48, ...centerHV }}>
         <Text style={fs16BoldBlack2}>Expenses</Text>
       </View>
-      <FlatList
-        data={expenseList}
-        renderItem={({item, index}) => {
-          const {id, name, category, amount} = item;
-          const getCategoryImage = findCategoryImage(category);
-          console.log('cat', category);
-          return (
-            <Fragment key={id}>
-              {index !== 0 ? <CustomSpacer space={sh12} /> : null}
-              <View
-                style={{
-                  backgroundColor: colorWhite._1,
-                  ...border(colorTransparent, sw1, sw8),
-                  ...flexChild,
-                  ...px(sw24),
-                  ...py(sh12),
-                }}>
-                <View style={flexRow}>
-                  <View>
-                    <Image
-                      source={getCategoryImage}
-                      style={{...imageContain, height: 60, width: 50}}
-                    />
-                  </View>
-                  <CustomSpacer isHorizontal={true} space={sw24} />
-                  <View
-                    style={{
-                      ...flexChild,
-                      ...py(sh8),
-                      ...flexRow,
-                    }}>
-                    <View style={spaceBetweenHorizontal}>
-                      <Text style={fs12BoldBlack2}>{name}</Text>
-                      <Text style={fs12BoldBlack2}>{amount}</Text>
+      {loading === true ? (
+        <Loading />
+      ) : (
+        <Fragment>
+          <View>
+            <FlatList
+              data={expenseList}
+              renderItem={({ item, index }) => {
+                const { id, name, category, amount } = item;
+                const handleEdit = () => {
+                  navigation.navigate("Details", { id: id.toString() });
+                };
+                const getCategoryImage = findCategoryImage(category);
+
+                return (
+                  <Fragment key={id}>
+                    {index !== 0 ? <CustomSpacer space={sh12} /> : null}
+                    <View
+                      style={{
+                        ...border(colorTransparent, sw1, sw8),
+                        ...flexChild,
+                        ...px(sw24),
+                        ...py(sh12),
+                        backgroundColor: colorWhite._1,
+                      }}>
+                      <View style={flexRow}>
+                        <View>
+                          <Image source={getCategoryImage} style={imageStyle} />
+                        </View>
+                        <CustomSpacer isHorizontal={true} space={sw24} />
+                        <View
+                          style={{
+                            ...flexChild,
+                            ...py(sh8),
+                            ...flexRow,
+                          }}>
+                          <View style={spaceBetweenHorizontal}>
+                            <Text style={fs12BoldBlack2}>{name}</Text>
+                            <Text style={fs12BoldBlack2}>{amount}</Text>
+                          </View>
+                          <CustomFlexSpacer />
+                          <View style={centerHV}>
+                            <Pressable style={editIconStyle} onPress={handleEdit}>
+                              <FontAwesome5 color={colorBlack._1} name="edit" size={20} />
+                            </Pressable>
+                          </View>
+                        </View>
+                      </View>
                     </View>
-                  </View>
-                </View>
-              </View>
-            </Fragment>
-          );
-        }}
-        keyboardShouldPersistTaps="always"
-        keyExtractor={(item: IExpenseItem, index: number) => `${item}-${index}`}
-      />
-      <Pressable style={addViewStyle} onPress={handleAddExpense}>
-        <FontAwesome5 name="plus" size={sh24} />
-      </Pressable>
+                  </Fragment>
+                );
+              }}
+              ListFooterComponent={() => <CustomSpacer space={sh48} />}
+              keyboardShouldPersistTaps="always"
+              keyExtractor={(item: IExpenseItem, index: number) => `${item}-${index}`}
+            />
+            <CustomSpacer space={sh24} />
+          </View>
+          <Pressable style={addViewStyle} onPress={handleAddExpense}>
+            <FontAwesome5 name="plus" size={sh24} />
+          </Pressable>
+        </Fragment>
+      )}
     </SafeAreaView>
   );
 };

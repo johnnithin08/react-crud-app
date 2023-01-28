@@ -1,7 +1,6 @@
 declare type HomeStackType = {
   Expenses: undefined;
-  Details: undefined;
+  Details: { id: string } | undefined;
 };
 
-declare type HomeStackNavigationProp =
-  import("@react-navigation/native-stack").NativeStackNavigationProp<HomeStackType>;
+declare type HomeStackNavigationProp = import("@react-navigation/native-stack").NativeStackNavigationProp<HomeStackType>;

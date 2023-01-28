@@ -1,14 +1,7 @@
 import React, { Fragment, FunctionComponent, useEffect, useState } from "react";
-import {
-  FlatList,
-  Keyboard,
-  Text,
-  TextStyle,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from "react-native";
+import { FlatList, Keyboard, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native";
 import Collapsible from "react-native-collapsible";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { NunitoRegular } from "../../constants/fonts";
 
 import {
@@ -29,7 +22,12 @@ import {
   px,
   py,
   sh12,
+  sh14,
   sh176,
+  sh20,
+  sh200,
+  sh24,
+  sh368,
   sh4,
   sh44,
   sh8,
@@ -125,10 +123,7 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
             height: _height,
             width: _width,
           };
-          if (
-            keyboardAvoidingRef !== undefined &&
-            keyboardAvoidingRef !== null
-          ) {
+          if (keyboardAvoidingRef !== undefined && keyboardAvoidingRef !== null) {
             Keyboard.dismiss();
             const keyboardOffset = keyboardAvoidingRef.state.bottom;
             measurement.y += keyboardOffset;
@@ -158,17 +153,13 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
     left: layout.x,
     position: "absolute",
     top: layout.y,
-    width: sw360,
+    width: sh200,
     zIndex: 3,
     ...viewStyle,
   };
 
-  const placeholderStyle: TextStyle = value
-    ? {}
-    : { color: colorBlack._2, fontFamily: NunitoRegular };
-  const inputStyle: ViewStyle = collapsibleModal
-    ? { borderColor: colorTransparent }
-    : {};
+  const placeholderStyle: TextStyle = value ? {} : { color: colorBlack._2, fontFamily: NunitoRegular };
+  const inputStyle: ViewStyle = collapsibleModal ? { borderColor: colorTransparent } : {};
 
   const handleKeyboardDidShow = () => {
     setKeyboardVisible(true);
@@ -178,14 +169,8 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
   };
 
   useEffect(() => {
-    const keyboardDidShow = Keyboard.addListener(
-      "keyboardDidShow",
-      handleKeyboardDidShow
-    );
-    const keyboardDidHide = Keyboard.addListener(
-      "keyboardDidHide",
-      handleKeyboardHide
-    );
+    const keyboardDidShow = Keyboard.addListener("keyboardDidShow", handleKeyboardDidShow);
+    const keyboardDidHide = Keyboard.addListener("keyboardDidHide", handleKeyboardHide);
     return () => {
       keyboardDidShow.remove();
       keyboardDidHide.remove();
@@ -203,8 +188,7 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
                 ...fs12BoldGray6,
                 ...disabledStyle,
                 ...labelStyle,
-              }}
-            >
+              }}>
               {label}
             </Text>
             <CustomSpacer space={defaultLabelSpace} />
@@ -219,19 +203,15 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
                 editable={false}
                 placeholder={placeholderLabel}
                 placeholderTextColor={colorBlack._2}
-                rightIcon={{ name: "caret-down" }}
-                viewStyle={{ ...inputStyle, ...viewStyle }}
+                rightIcon={{ name: "angle-down", size: sh20 }}
+                viewStyle={{ ...inputStyle, width: sh200, ...viewStyle }}
                 value={value}
               />
             </View>
           </TouchableWithoutFeedback>
         </View>
       </View>
-      <BasicModal
-        animationOutTiming={80}
-        visible={collapsibleModal}
-        hasBackdrop={false}
-      >
+      <BasicModal animationOutTiming={80} visible={collapsibleModal} hasBackdrop={false}>
         <TouchableWithoutFeedback onPress={handleBackdropPress}>
           <View style={fullHW}>
             <View style={dropdownContainer}>
@@ -240,17 +220,15 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
                   ...centerVertical,
                   ...flexRow,
                   height: sh44,
-                  ...px(sw15),
-                }}
-              >
+                  ...px(sh14),
+                }}>
                 <Text
                   numberOfLines={1}
                   style={{
                     ...fs16BoldBlue1,
                     ...placeholderStyle,
                     maxWidth: sw286,
-                  }}
-                >
+                  }}>
                   {value || placeholderLabel}
                 </Text>
                 <CustomFlexSpacer />
@@ -260,18 +238,13 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
                                     size={sw24}
                                 /> */}
               </View>
-              <Collapsible
-                duration={100}
-                collapsed={collapse}
-                style={noBGColor}
-              >
+              <Collapsible duration={100} collapsed={collapse} style={noBGColor}>
                 <View
                   style={{
                     borderTopWidth: sw2,
                     borderTopColor: colorBlue._1,
                     maxHeight: maxHeight,
-                  }}
-                >
+                  }}>
                   <View style={style}>
                     <FlatList
                       data={labelExtractor}
@@ -282,9 +255,7 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
                       }}
                       keyboardDismissMode="on-drag"
                       keyboardShouldPersistTaps="always"
-                      keyExtractor={(item: string, index: number) =>
-                        `${item}-${index}`
-                      }
+                      keyExtractor={(item: string, index: number) => `${item}-${index}`}
                       ListHeaderComponent={() => <CustomSpacer space={sh8} />}
                       ListFooterComponent={() => <CustomSpacer space={sh8} />}
                       renderItem={({ index }) => {
@@ -306,33 +277,25 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
                           handleAnimationClose();
                           setTimeout(() => {
                             if (itemExtractor !== undefined) {
-                              handleChange(itemExtractor.value);
+                              handleChange(itemExtractor.label);
                             }
                           }, 250);
                         };
 
                         return (
-                          <TouchableWithoutFeedback
-                            key={index}
-                            onPress={handleSelect}
-                          >
+                          <TouchableWithoutFeedback key={index} onPress={handleSelect}>
                             <View
                               style={{
                                 ...itemContainer,
                                 ...selectedStyle,
-                              }}
-                            >
+                              }}>
                               {index === 0 || <CustomSpacer space={sh8} />}
                               <Text
                                 numberOfLines={1}
                                 style={{
                                   ...fs16BoldBlue1,
-                                  maxWidth:
-                                    value === itemExtractor.label
-                                      ? sw296
-                                      : sw328,
-                                }}
-                              >
+                                  maxWidth: value === itemExtractor.label ? sw296 : sw328,
+                                }}>
                                 {itemExtractor.label}
                               </Text>
                               {value === itemExtractor.label ? (
@@ -342,23 +305,12 @@ export const NewDropdown: FunctionComponent<NewDropdownProps> = ({
                                     style={{
                                       ...centerHV,
                                       ...circle(sw16, colorGreen._1),
-                                    }}
-                                  >
-                                    {/* <IcoMoon
-                                                                            color={
-                                                                                colorWhite._1
-                                                                            }
-                                                                            name="check-v2"
-                                                                            size={
-                                                                                sh12
-                                                                            }
-                                                                        /> */}
+                                    }}>
+                                    <FontAwesome5 name="angle-down" size={sh24} />
                                   </View>
                                 </Fragment>
                               ) : null}
-                              {index === labelExtractor.length - 1 || (
-                                <CustomSpacer space={sh8} />
-                              )}
+                              {index === labelExtractor.length - 1 || <CustomSpacer space={sh8} />}
                             </View>
                           </TouchableWithoutFeedback>
                         );

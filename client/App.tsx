@@ -8,25 +8,22 @@
  * @format
  */
 
-import React, {Fragment} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {KeyboardAvoidingView, Platform, StatusBar} from 'react-native';
-import {RootNavigator} from './src/navigation';
-import {flexChild} from './src/styles/common';
+import React, { Fragment } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, StatusBar } from "react-native";
+import { RootNavigator } from "./src/navigation";
+import { flexChild } from "./src/styles/common";
 
 export const App = () => {
   return (
     <NavigationContainer>
       <SafeAreaProvider>
-        <StatusBar barStyle={'dark-content'} />
+        <StatusBar barStyle={"dark-content"} />
         <Fragment>
           {Platform.select({
             android: (
-              <KeyboardAvoidingView
-                behavior="padding"
-                enabled={true}
-                style={flexChild}>
+              <KeyboardAvoidingView behavior="padding" enabled={true} style={flexChild}>
                 <RootNavigator />
               </KeyboardAvoidingView>
             ),
