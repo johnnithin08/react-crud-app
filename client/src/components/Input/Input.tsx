@@ -1,14 +1,6 @@
 import React, { Fragment, FunctionComponent, RefObject, useState } from "react";
-import {
-  NativeSyntheticEvent,
-  Text,
-  TextInput,
-  TextInputFocusEventData,
-  TextInputProps,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native";
+import { NativeSyntheticEvent, Text, TextInput, TextInputFocusEventData, TextInputProps, TextStyle, View, ViewStyle } from "react-native";
+import FontAwesome5, { FontAwesome5IconButton } from "react-native-vector-icons/FontAwesome5";
 import { NunitoRegular } from "../../constants/fonts";
 
 import {
@@ -28,7 +20,10 @@ import {
   fs12RegRed2,
   fs16RegGray6,
   px,
+  sh14,
   sh16,
+  sh200,
+  sh368,
   sh4,
   sh48,
   sh50,
@@ -59,12 +54,8 @@ export interface CustomTextInputProps extends TextInputProps {
   noBorder?: boolean;
   onPressLabel?: () => void;
   prefixStyle?: TextStyle;
-  // rightIcon?: IIcon;
-  setRef?:
-    | string
-    | ((instance: TextInput | null) => void)
-    | RefObject<TextInput>
-    | null;
+  rightIcon?: IIcon;
+  setRef?: string | ((instance: TextInput | null) => void) | RefObject<TextInput> | null;
   spaceToBottom?: number;
   spaceToLabel?: number;
   spaceToTop?: number;
@@ -90,7 +81,7 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
   onPressLabel,
   placeholder,
   prefixStyle,
-  // rightIcon,
+  rightIcon,
   setRef,
   spaceToBottom,
   spaceToLabel,
@@ -105,10 +96,7 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
 
   const borderWidth = noBorder === true ? { borderWidth: 0 } : {};
   const disabledOpacity = disabled === true ? { ...disabledOpacity6 } : {};
-  const disabledStyle =
-    disabled === true
-      ? { ...disabledOpacity, backgroundColor: colorGray._1 }
-      : {};
+  const disabledStyle = disabled === true ? { ...disabledOpacity, backgroundColor: colorGray._1 } : {};
   const errorStyle: ViewStyle =
     error !== undefined
       ? {
@@ -117,9 +105,7 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
           borderColor: colorRed._2,
         }
       : {};
-  const focusedShadow = isFocused
-    ? customShadow(colorBlue._1, 0, 0, 0.02, sw4)
-    : {};
+  const focusedShadow = isFocused ? customShadow(colorBlue._1, 0, 0, 0.02, sw4) : {};
 
   const defaultContainerStyle: ViewStyle = {
     paddingTop: spaceToTop !== undefined ? spaceToTop : 0,
@@ -127,14 +113,10 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
   };
 
   const defaultInputStyle: ViewStyle = {
-    ...border(
-      isFocused ? colorBlue._1 : colorGray._3,
-      isFocused ? sw2 : sw1,
-      sw32
-    ),
+    ...border(isFocused ? colorBlue._1 : colorGray._3, isFocused ? sw2 : sw1, sw32),
     ...centerVertical,
     ...flexRow,
-    ...px(isFocused === false && error === undefined ? sw16 : sw15),
+    ...px(isFocused === false && error === undefined ? sh16 : sh14),
     backgroundColor: colorWhite._1,
     height: sh48,
     width: sw360,
@@ -173,9 +155,7 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
     }
   };
 
-  const handleFocus = (
-    event: NativeSyntheticEvent<TextInputFocusEventData>
-  ) => {
+  const handleFocus = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
     if (onFocus) {
       onFocus(event);
     }
@@ -183,10 +163,7 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
   };
 
   return (
-    <View
-      onLayout={onLayout}
-      style={{ width: sw360, ...defaultContainerStyle, ...containerStyle }}
-    >
+    <View onLayout={onLayout} style={{ width: sh200, ...defaultContainerStyle, ...containerStyle }}>
       {label === undefined ? null : (
         <Text
           onPress={onPressLabel}
@@ -195,8 +172,7 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
             paddingBottom: spaceToLabel || sh4,
             ...labelStyle,
           }}
-          suppressHighlighting={true}
-        >
+          suppressHighlighting={true}>
           {label}
         </Text>
       )}
@@ -215,9 +191,7 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
         )} */}
         {inputPrefix !== undefined ? (
           <Fragment>
-            <Text style={{ ...fs16RegGray6, ...prefixStyle }}>
-              {inputPrefix}
-            </Text>
+            <Text style={{ ...fs16RegGray6, ...prefixStyle }}>{inputPrefix}</Text>
             <CustomSpacer isHorizontal={true} space={sw8} />
           </Fragment>
         ) : null}
@@ -242,18 +216,18 @@ export const CustomTextInput: FunctionComponent<CustomTextInputProps> = ({
             <IcoMoon color={colorBlue._4} name="error-filled" onPress={handleClear} size={sw24} suppressHighlighting={true} />
           </Fragment>
         ) : null} */}
-        {/* {rightIcon === undefined ? null : (
+        {rightIcon === undefined ? null : (
           <Fragment>
-            <CustomSpacer isHorizontal={true} space={sw16} />
-            <IcoMoon
-              color={rightIcon.color || colorBlue._1}
+            <CustomSpacer isHorizontal={true} space={sh16} />
+            <FontAwesome5
+              // color={rightIcon.color || colorBlue._1}
               name={rightIcon.name}
-              onPress={disabled === true ? undefined : rightIcon.onPress}
+              // onPress={disabled === true ? undefined : rightIcon.onPress}
               size={rightIcon.size || sw24}
-              suppressHighlighting={true}
+              // suppressHighlighting={true}
             />
           </Fragment>
-        )} */}
+        )}
       </View>
       {/* {error === undefined ? null : (
         <View>

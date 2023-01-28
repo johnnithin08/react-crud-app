@@ -3,6 +3,8 @@ const { addExpense } = require("./add_expense");
 const { deleteExpense } = require("./delete_expense");
 const { getExpenses } = require("./get_expenses");
 const { editExpense } = require("./edit_expense");
+const { getExpense } = require("./get_expense");
+const { getGroupedExpenses } = require("./get_grouped_expenses");
 const router = express.Router();
 
 router.post("/add_expense", async (req, res) => {
@@ -18,6 +20,26 @@ router.get("/get_expenses", async (req, res) => {
   try {
     const expensesResult = await getExpenses();
     res.send({ status: 200, data: expensesResult });
+  } catch (err) {
+    res.send({ status: 400, message: err });
+  }
+});
+
+router.get("/get_grouped_expenses", async (req, res) => {
+  console.log("enter");
+  try {
+    const expensesResult = await getGroupedExpenses();
+    res.send({ status: 200, data: expensesResult });
+  } catch (err) {
+    res.send({ status: 400, message: err });
+  }
+});
+
+router.post("/get_expense", async (req, res) => {
+  console.log("enter");
+  try {
+    const expenseResult = await getExpense(req);
+    res.send({ status: 200, data: expenseResult });
   } catch (err) {
     res.send({ status: 400, message: err });
   }

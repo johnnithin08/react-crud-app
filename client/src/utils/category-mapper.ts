@@ -1,18 +1,7 @@
 import { LocalAssets } from "../assets/images/LocalAssets";
 
 export const findCategoryImage = (categoryName: string): number => {
-  const {
-    bus,
-    clothing,
-    diningOut,
-    electricity,
-    grocery,
-    internet,
-    liquor,
-    others,
-    rent,
-    taxi,
-  } = LocalAssets.expenseCategories;
+  const { bus, clothing, diningOut, electricity, grocery, internet, liquor, others, rent, taxi } = LocalAssets.expenseCategories;
   switch (categoryName) {
     case "bus":
       return bus;
