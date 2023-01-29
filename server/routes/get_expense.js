@@ -1,8 +1,9 @@
 const { db } = require("../db-config");
 
-const deleteExpense = (req) => {
+const getExpense = (req) => {
+  console.log("enter inside", req);
   const id = req.body.id;
-  const query = `DELETE FROM dummy_table WHERE 	id = ?`;
+  const query = `SELECT * FROM dummy_table WHERE id = ?;`;
   return new Promise((reject, resolve) => {
     db.query(query, [id], (err, result) => {
       if (result !== undefined) {
@@ -14,4 +15,4 @@ const deleteExpense = (req) => {
   });
 };
 
-module.exports = { deleteExpense };
+module.exports = { getExpense };
