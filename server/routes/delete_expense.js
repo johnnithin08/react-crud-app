@@ -1,3 +1,5 @@
+const { db } = require("../db-config");
+
 const deleteExpense = (req) => {
   const id = req.body.id;
   const query = `DELETE FROM dummy_table WHERE 	id = ?`;
