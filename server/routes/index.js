@@ -56,10 +56,12 @@ router.post("/edit_expense", async (req, res) => {
 });
 
 router.post("/delete_expense", async (req, res) => {
+  // console.log("req", req);
   try {
     const deleteExpensesResult = await deleteExpense(req);
     res.send({ status: 200, data: deleteExpensesResult });
   } catch (err) {
+    console.log("err", err);
     res.send({ status: 400, message: err });
   }
 });

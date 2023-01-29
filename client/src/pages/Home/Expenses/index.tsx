@@ -73,6 +73,19 @@ export const Expenses: FunctionComponent<IExpensesProp> = ({ navigation }: IExpe
     }
   };
 
+  const handleDeleteExpense = async (id: number) => {
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:3001/delete_expense", { id: id });
+      // setExpenseList(response.data.message);
+      setLoading(false);
+      console.log("resp delete list", response);
+    } catch (err) {
+      setLoading(false);
+      console.log("err", err);
+    }
+  };
+
   const handleAddExpense = () => {
     navigation.navigate("Details");
   };
@@ -122,6 +135,11 @@ export const Expenses: FunctionComponent<IExpensesProp> = ({ navigation }: IExpe
                 const handleEdit = () => {
                   navigation.navigate("Details", { id: id.toString() });
                 };
+
+                const handleDelete = async () => {
+                  await handleDeleteExpense(id);
+                  await handleFetch();
+                };
                 const getCategoryImage = findCategoryImage(category);
 
                 return (
@@ -151,11 +169,17 @@ export const Expenses: FunctionComponent<IExpensesProp> = ({ navigation }: IExpe
                             <Text style={fs12BoldBlack2}>{amount}</Text>
                           </View>
                           <CustomFlexSpacer />
-                          <View style={centerHV}>
+                          {/* <View style={flexRow}> */}
+                          <View style={{ ...centerHV, ...flexRow }}>
                             <Pressable style={editIconStyle} onPress={handleEdit}>
                               <FontAwesome5 color={colorBlack._1} name="edit" size={20} />
                             </Pressable>
+                            <CustomSpacer isHorizontal={true} space={sh16} />
+                            <Pressable style={editIconStyle} onPress={handleDelete}>
+                              <FontAwesome5 color={colorBlack._1} name="trash" size={20} />
+                            </Pressable>
                           </View>
+                          {/* </View> */}
                         </View>
                       </View>
                     </View>
