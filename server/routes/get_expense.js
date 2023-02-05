@@ -1,9 +1,8 @@
 const { db } = require("../db-config");
 
 const getExpense = async (req) => {
-  console.log("enter inside", req);
   const id = req.body.id;
-  const query = `SELECT * FROM dummy_table WHERE id = ?;`;
+  const query = `SELECT * FROM expenseCrud.expenses WHERE id = ?;`;
   try {
     const [data] = await db.execute(query, [id]);
     return data;

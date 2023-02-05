@@ -22,13 +22,12 @@ export const Summary: FunctionComponent = () => {
   const handleFetchExpenses = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3001/get_grouped_expenses");
-      setGroupedExpenses(response.data.message);
+      const response = await axios.get("https://raplrb14t9.execute-api.ap-south-1.amazonaws.com/get_grouped_expenses");
+      console.log("resp", response);
+      setGroupedExpenses(response.data.data);
       setLoading(false);
-      console.log("resp grouped expense list", response);
     } catch (err) {
       setLoading(false);
-      console.log("err", err);
     }
   };
 
@@ -57,7 +56,6 @@ export const Summary: FunctionComponent = () => {
     useShadowColorFromDataset: false, // optional
   };
 
-  console.log("chart", chartData);
   return (
     <SafeAreaView style={flexChild}>
       <View style={{ backgroundColor: colorGreen._1, height: sh48, ...centerHV }}>

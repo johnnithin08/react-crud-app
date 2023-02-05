@@ -63,26 +63,22 @@ export const Expenses: FunctionComponent<IExpensesProp> = ({ navigation }: IExpe
   const handleFetch = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3001/get_expenses");
-      setExpenseList(response.data.message);
+      const response = await axios.get("https://raplrb14t9.execute-api.ap-south-1.amazonaws.com/get_expenses");
+      setExpenseList(response.data.data);
       setLoading(false);
-      console.log("resp expense list", response);
     } catch (err) {
       setLoading(false);
-      console.log("err", err);
     }
   };
 
   const handleDeleteExpense = async (id: number) => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/delete_expense", { id: id });
+      const response = await axios.post("https://raplrb14t9.execute-api.ap-south-1.amazonaws.com/delete_expense", { id: id });
       // setExpenseList(response.data.message);
       setLoading(false);
-      console.log("resp delete list", response);
     } catch (err) {
       setLoading(false);
-      console.log("err", err);
     }
   };
 
@@ -91,7 +87,6 @@ export const Expenses: FunctionComponent<IExpensesProp> = ({ navigation }: IExpe
   };
 
   useEffect(() => {
-    console.log("enter");
     handleFetch();
   }, [isFocused]);
 

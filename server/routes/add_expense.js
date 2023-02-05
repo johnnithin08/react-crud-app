@@ -5,7 +5,7 @@ const addExpense = async (req) => {
   const category = req.body.category;
   const amount = req.body.amount;
   try {
-    const query = `INSERT INTO dummy_table VALUES (DEFAULT, ?, ?, ?);`;
+    const query = `INSERT INTO expenseCrud.expenses VALUES (DEFAULT, ?, ?, ?);`;
     const [data] = await db.execute(query, [name, category, amount]);
     return data;
   } catch (err) {
