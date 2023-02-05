@@ -2,15 +2,12 @@ const { db } = require("../db-config");
 
 const getExpenses = async () => {
   const query = `SELECT * FROM dummy_table`;
-  return new Promise((reject, resolve) => {
-    db.query(query, (err, result) => {
-      if (result !== undefined) {
-        resolve(result);
-      } else {
-        reject(err);
-      }
-    });
-  });
+  try {
+    const [data] = await db.execute(query);
+    return data;
+  } catch (err) {
+    return err;
+  }
 };
 
 module.exports = { getExpenses };

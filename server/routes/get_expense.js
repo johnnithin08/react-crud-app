@@ -1,18 +1,15 @@
 const { db } = require("../db-config");
 
-const getExpense = (req) => {
+const getExpense = async (req) => {
   console.log("enter inside", req);
   const id = req.body.id;
   const query = `SELECT * FROM dummy_table WHERE id = ?;`;
-  return new Promise((reject, resolve) => {
-    db.query(query, [id], (err, result) => {
-      if (result !== undefined) {
-        resolve(result);
-      } else {
-        reject(err);
-      }
-    });
-  });
+  try {
+    const [data] = await db.execute(query, [id]);
+    return data;
+  } catch (err) {
+    return err;
+  }
 };
 
 module.exports = { getExpense };
