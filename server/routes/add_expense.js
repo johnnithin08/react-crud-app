@@ -1,19 +1,16 @@
 const { db } = require("../db-config");
 
-const addExpense = (req) => {
+const addExpense = async (req) => {
   const name = req.body.name;
   const category = req.body.category;
   const amount = req.body.amount;
-  const query = `INSERT INTO dummy_table VALUES (DEFAULT, ?, ?, ?);`;
-  return new Promise((reject, resolve) => {
-    db.query(query, [name, category, amount], (err, result) => {
-      if (result !== undefined) {
-        resolve(result);
-      } else {
-        reject(err);
-      }
-    });
-  });
+  try {
+    const query = `INSERT INTO dummy_table VALUES (DEFAULT, ?, ?, ?);`;
+    const [data] = await db.execute(query, [name, category, amount]);
+    return data;
+  } catch (err) {
+    return err;
+  }
 };
 
 module.exports = { addExpense };
