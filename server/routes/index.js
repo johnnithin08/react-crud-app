@@ -19,31 +19,14 @@ router.post("/add_expense", async (req, res) => {
 
 router.get("/get_expenses", async (req, res) => {
   try {
-    // const query = `SELECT * FROM dummy_table`;
-    // return new Promise((reject, resolve) => {
-    // const dbResponse = db.query(query, (err, result) => {
-    //   if (result !== undefined) {
-    //     return result;
-    //   } else {
-    //     return err;
-    //   }
-    // });
-    // dbResponse.then((resp) => console.log("promise", resp));
-    // });
-    // console.log("resp", dbResponse);
     const expensesResult = await getExpenses();
-    // expensesResult.then((res) => console.log("after then", res));
-    // const promiseResponse = Promise.all(expensesResult);
-    console.log("res", expensesResult);
     res.send({ status: 200, data: expensesResult });
   } catch (err) {
-    console.log("res error", err);
     res.send({ status: 400, message: err });
   }
 });
 
 router.get("/get_grouped_expenses", async (req, res) => {
-  console.log("enter");
   try {
     const expensesResult = await getGroupedExpenses();
     res.send({ status: 200, data: expensesResult });
@@ -53,10 +36,8 @@ router.get("/get_grouped_expenses", async (req, res) => {
 });
 
 router.post("/get_expense", async (req, res) => {
-  console.log("enter");
   try {
     const expenseResult = await getExpense(req);
-    console.log("resp", expenseResult);
     res.send({ status: 200, data: expenseResult });
   } catch (err) {
     res.send({ status: 400, message: err });
@@ -66,7 +47,6 @@ router.post("/get_expense", async (req, res) => {
 router.post("/edit_expense", async (req, res) => {
   try {
     const editExpenseResult = await editExpense(req);
-    console.log("edit", editExpenseResult);
     res.send({ status: 200, data: editExpenseResult });
   } catch (err) {
     res.send({ status: 400, message: err });
@@ -74,12 +54,10 @@ router.post("/edit_expense", async (req, res) => {
 });
 
 router.post("/delete_expense", async (req, res) => {
-  // console.log("req", req);
   try {
     const deleteExpensesResult = await deleteExpense(req);
     res.send({ status: 200, data: deleteExpensesResult });
   } catch (err) {
-    console.log("err", err);
     res.send({ status: 400, message: err });
   }
 });

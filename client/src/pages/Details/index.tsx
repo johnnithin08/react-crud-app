@@ -53,47 +53,37 @@ export const Details: FunctionComponent<DetailsProps> = ({ navigation, route }: 
 
   const handleAddExpense = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/add_expense", {
+      const response = await axios.post("https://raplrb14t9.execute-api.ap-south-1.amazonaws.com/add_expense", {
         name: name,
         amount: amount,
         category: DICTIONARY_CATEGORIES[DICTIONARY_CATEGORIES.findIndex((eachValue) => eachValue.label === category)].value,
       });
-      console.log("resp", response.data.message);
       navigation.navigate("Expenses");
-    } catch (err) {
-      console.log("err", err);
-    }
+    } catch (err) {}
   };
 
   const handleEditExpense = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/edit_expense", {
+      const response = await axios.post("https://raplrb14t9.execute-api.ap-south-1.amazonaws.com/edit_expense", {
         id: id,
         name: name,
         amount: amount,
         category: DICTIONARY_CATEGORIES[DICTIONARY_CATEGORIES.findIndex((eachValue) => eachValue.label === category)].value,
       });
-      console.log("resp", response.data.message);
       navigation.navigate("Expenses");
-    } catch (err) {
-      console.log("err", err);
-    }
+    } catch (err) {}
   };
 
   const handleFetch = async () => {
-    console.log("id", id);
     try {
-      const response = await axios.post("http://localhost:3001/get_expense", {
+      const response = await axios.post("https://raplrb14t9.execute-api.ap-south-1.amazonaws.com/get_expense", {
         id: id.toString(),
       });
-      console.log("resp", response.data.message[0]);
-      const data = response.data.message[0];
+      const data = response.data.data[0];
       setAmount(data.amount.toString());
       setName(data.name);
       setCategory(DICTIONARY_CATEGORIES[DICTIONARY_CATEGORIES.findIndex((eachCategory) => eachCategory.value === data.category)].label);
-    } catch (err) {
-      console.log("err", err);
-    }
+    } catch (err) {}
   };
 
   const handleSave = () => {
