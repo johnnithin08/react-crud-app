@@ -23,9 +23,9 @@ export const App = () => {
         <Fragment>
           {Platform.select({
             android: (
-              <KeyboardAvoidingView behavior="padding" enabled={true} style={flexChild}>
-                <RootNavigator />
-              </KeyboardAvoidingView>
+              // <KeyboardAvoidingView behavior="padding" enabled={true} style={flexChild}>
+              <RootNavigator />
+              // </KeyboardAvoidingView>
             ),
             ios: <RootNavigator />,
           })}
